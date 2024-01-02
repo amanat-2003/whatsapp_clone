@@ -3,6 +3,7 @@ import 'package:whatsapp_clone/colors.dart';
 import 'package:whatsapp_clone/widgets/contacts_list.dart';
 
 class MobileLayoutScreen extends StatelessWidget {
+  static const routeName = "/mobile-layout-screen";
   const MobileLayoutScreen({Key? key}) : super(key: key);
 
   @override
