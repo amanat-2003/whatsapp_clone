@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:whatsapp_clone/common/utils/utils.dart';
 
 class UserInformationScreen extends StatefulWidget {
   static const routeName = "/user-information-screen";
@@ -10,6 +13,12 @@ class UserInformationScreen extends StatefulWidget {
 
 class _UserInformationScreenState extends State<UserInformationScreen> {
   final nameController = TextEditingController();
+  File? image;
+
+  void pickImage() async {
+    image = await pickImageFromGallery(context);
+    setState(() {});
+  }
 
   @override
   void dispose() {
@@ -28,17 +37,22 @@ class _UserInformationScreenState extends State<UserInformationScreen> {
               SizedBox(height: 20),
               Stack(
                 children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      'https://thumbs.dreamstime.com/b/man-student-icon-solid-style-any-projects-man-student-icon-solid-style-any-projects-use-website-mobile-app-193904943.jpg',
-                    ),
-                    radius: 70,
-                  ),
+                  image == null
+                      ? CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            'https://thumbs.dreamstime.com/b/man-student-icon-solid-style-any-projects-man-student-icon-solid-style-any-projects-use-website-mobile-app-193904943.jpg',
+                          ),
+                          radius: 70,
+                        )
+                      : CircleAvatar(
+                          backgroundImage: FileImage(image!),
+                          radius: 70,
+                        ),
                   Positioned(
                     bottom: -10,
                     right: -10,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: pickImage,
                       icon: Icon(
                         Icons.add_photo_alternate,
                         color: Colors.amber,
