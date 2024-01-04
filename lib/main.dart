@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/colors.dart';
-import 'package:whatsapp_clone/common/widgets/error_widget.dart';
+import 'package:whatsapp_clone/common/screens/loading_screen.dart';
+import 'package:whatsapp_clone/common/screens/error_screen.dart';
 import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
 import 'package:whatsapp_clone/features/landing/screens/landing_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -33,7 +34,7 @@ class MyApp extends ConsumerWidget {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: backgroundColor,
       ),
-      home: ref.watch(getAuthUserProvider).when(
+      home: ref.watch(getCurrentUserProvider).when(
         data: (user) {
           if (user == null) {
             return const LandingScreen();
@@ -42,18 +43,12 @@ class MyApp extends ConsumerWidget {
           }
         },
         error: (error, stackTrace) {
-          return Scaffold(
-            body: ErrorW(
-              error: error.toString(),
-            ),
+          return ErrorScreen(
+            error: error.toString(),
           );
         },
         loading: () {
-          return Scaffold(
-            body: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
+          return LoadingScreen();
         },
       ),
       onGenerateRoute: generateRoute,

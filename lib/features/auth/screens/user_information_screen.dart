@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/common/strings/strings.dart';
 import 'package:whatsapp_clone/common/utils/utils.dart';
+import 'package:whatsapp_clone/common/widgets/custom_button.dart';
+import 'package:whatsapp_clone/common/widgets/loader.dart';
 import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
 
 class UserInformationScreen extends ConsumerStatefulWidget {
@@ -93,6 +95,32 @@ class _UserInformationScreenState extends ConsumerState<UserInformationScreen> {
                   ),
                 ],
               ),
+              Spacer(),
+              FutureBuilder(
+                future:
+                    ref.watch(authControllerProvider).userDataAlreadyPresent(),
+                builder: (context, userDataAlreadyPresentSnapshot) {
+                  if (userDataAlreadyPresentSnapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return Loader();
+                  } else {
+                    return SizedBox(
+                      width: size.width * 0.5,
+                      child: CustomButton(
+                        text: 'Skip',
+                        onPressed: userDataAlreadyPresentSnapshot.data == true
+                            ? () {
+                                ref
+                                    .read(authControllerProvider)
+                                    .takeToMobileLayoutScreen(context: context);
+                              }
+                            : null,
+                      ),
+                    );
+                  }
+                },
+              ),
+              SizedBox(height: 20),
             ],
           ),
         ),

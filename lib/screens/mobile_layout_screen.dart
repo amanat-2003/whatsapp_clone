@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/colors.dart';
+import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
+import 'package:whatsapp_clone/features/select_contacts/screens/select_contacts_screen.dart';
 import 'package:whatsapp_clone/widgets/contacts_list.dart';
 
-class MobileLayoutScreen extends StatelessWidget {
+class MobileLayoutScreen extends ConsumerWidget {
   static const routeName = "/mobile-layout-screen";
   const MobileLayoutScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(getCurrentUserProvider).whenData(
+      (value) {
+      },
+    );
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -15,14 +22,29 @@ class MobileLayoutScreen extends StatelessWidget {
           elevation: 0,
           backgroundColor: appBarColor,
           centerTitle: false,
-          title: const Text(
-            'WhatsApp',
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.grey,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          title: FutureBuilder(
+              future: ref.watch(authControllerProvider).getCurrentUser(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Text(
+                    'how are you?',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                } else {
+                  return Text(
+                    'how are you? ${snapshot.data!.name}',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                }
+              }),
           actions: [
             IconButton(
               icon: const Icon(Icons.search, color: Colors.grey),
@@ -56,7 +78,8 @@ class MobileLayoutScreen extends StatelessWidget {
         ),
         body: const ContactsList(),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () =>
+              Navigator.of(context).pushNamed(SelectContactsScreen.routeName),
           backgroundColor: tabColor,
           child: const Icon(
             Icons.comment,

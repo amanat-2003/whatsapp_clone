@@ -31,6 +31,28 @@ class AuthRepository {
     required this.firestore,
   });
 
+  void takeToMobileLayoutScreen({
+    required BuildContext context,
+  }) {
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        MobileLayoutScreen.routeName, (route) => false);
+  }
+
+  Future<bool> userDataAlreadyPresent() async {
+    final uid = auth.currentUser!.uid;
+    final userData =
+        (await firestore.collection('users').doc(uid).get()).data();
+    if (userData != null) {
+      debugPrint('UserData is not null');
+      return true;
+    }
+    return false;
+  }
+
+  void logOut() async {
+    await auth.signOut();
+  }
+
   Future<UserModel?> getCurrentUser() async {
     UserModel? userModel;
     try {
@@ -47,6 +69,20 @@ class AuthRepository {
     }
 
     return userModel;
+  }
+
+  Stream<UserModel> userDataStream(String userId) {
+    // debugPrint('Nothing completed');
+    final a = firestore.collection('users').doc(userId);
+    // debugPrint('a completed');
+    final b = a.snapshots().map((event) => UserModel.fromMap(event.data()!));
+    // debugPrint('b completed');
+    // return firestore
+    //     .collection('users')
+    //     .doc(userId)
+    //     .snapshots()
+    //     .map((event) => UserModel.fromMap(event.data()!));
+    return b;
   }
 
   void signInWithPhoneNumber(String phoneNumber, BuildContext context) async {
@@ -104,6 +140,14 @@ class AuthRepository {
     try {
       String profilePic = defaultProfilePicUrl;
       final uid = auth.currentUser!.uid;
+      final userData =
+          (await firestore.collection('users').doc(uid).get()).data();
+      if (userData != null) {
+        debugPrint('UserData is not null');
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            MobileLayoutScreen.routeName, (route) => false);
+        return;
+      }
 
       if (image != null) {
         profilePic = await ref

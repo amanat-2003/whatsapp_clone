@@ -17,9 +17,9 @@ final authControllerProvider = Provider(
   },
 );
 
-final getAuthUserProvider = FutureProvider((ref) {
+final getCurrentUserProvider = FutureProvider((ref) {
   final authController = ref.watch(authControllerProvider);
-  return authController.getUser();
+  return authController.getCurrentUser();
 });
 
 class AuthController {
@@ -31,7 +31,25 @@ class AuthController {
     required this.ref,
   });
 
-  Future<UserModel?> getUser() async {
+  void takeToMobileLayoutScreen({
+    required BuildContext context,
+  }) {
+    repository.takeToMobileLayoutScreen(context: context);
+  }
+
+  Future<bool> userDataAlreadyPresent() {
+    return repository.userDataAlreadyPresent();
+  }
+
+  void logOut() {
+    repository.logOut();
+  }
+
+  Stream<UserModel> userDataStream(String userId) {
+    return repository.userDataStream(userId);
+  }
+
+  Future<UserModel?> getCurrentUser() async {
     final user = await repository.getCurrentUser();
     return user;
   }
