@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:whatsapp_clone/common/enums/message_type.dart';
+import 'package:whatsapp_clone/common/repository/file_upload_repository.dart';
 import 'package:whatsapp_clone/common/utils/utils.dart';
 import 'package:whatsapp_clone/models/contact_chat.dart';
 import 'package:whatsapp_clone/models/message_model.dart';
@@ -26,6 +29,76 @@ class ChatRepository {
     required this.firestore,
     required this.auth,
   });
+
+  void sendFileMessage({
+    required BuildContext context,
+    required File file,
+    required MessageType messageType,
+    required ProviderRef ref,
+    required String receiverUserId,
+  }) async {
+    try {
+      final messageId = Uuid().v1();
+
+      final senderUserId = auth.currentUser!.uid;
+
+      final senderUserModel = UserModel.fromMap(
+          (await firestore.collection('users').doc(senderUserId).get())
+              .data()!);
+
+      final receiverUserModel = UserModel.fromMap(
+          (await firestore.collection('users').doc(receiverUserId).get())
+              .data()!);
+
+      final uploadUrl =
+          await ref.watch(fileUploadRepositoryProvider).uploadToFirebaseStorage(
+                context,
+                file,
+                'chats/${messageType.stringValue}/${senderUserModel.uid}/${receiverUserModel.uid}/$messageId',
+              );
+
+      final time = DateTime.now();
+
+      var contactChatText = '';
+
+      switch (messageType) {
+        case MessageType.image:
+          contactChatText = "📷 Image";
+          break;
+        case MessageType.video:
+          contactChatText = "🎥 Video";
+          break;
+        case MessageType.audio:
+          contactChatText = "🔊 Audio";
+          break;
+        case MessageType.gif:
+          contactChatText = "🖼️ GIF";
+          break;
+        default:
+          contactChatText = "Error in chat repo send file message";
+          break;
+      }
+
+      _sendDataToContactChatSubCollection(
+        text: contactChatText,
+        time: time,
+        senderUserModel: senderUserModel,
+        receiverUserModel: receiverUserModel,
+      );
+
+      _sendDataToMessageSubCollection(
+        text: uploadUrl,
+        time: time,
+        messageId: messageId,
+        isSeen: false,
+        senderUserId: senderUserId,
+        receiverUserId: receiverUserId,
+        messageType: messageType,
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
 
   Stream<List<MessageModel>> getChatMessages(
       BuildContext context, String receiverUserId) {

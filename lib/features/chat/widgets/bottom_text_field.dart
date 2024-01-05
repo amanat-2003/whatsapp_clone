@@ -1,8 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:whatsapp_clone/colors.dart';
+import 'package:whatsapp_clone/common/enums/message_type.dart';
+import 'package:whatsapp_clone/common/utils/utils.dart';
 import 'package:whatsapp_clone/features/chat/controller/chat_controller.dart';
 
 class BottomTextField extends ConsumerStatefulWidget {
@@ -18,6 +22,30 @@ class BottomTextField extends ConsumerStatefulWidget {
 class _BottomTextFieldState extends ConsumerState<BottomTextField> {
   final _messageController = TextEditingController();
   bool isTypedSomething = false;
+
+  void sendFile({
+    required File file,
+    required MessageType messageType,
+  }) {
+    ref.read(chatControllerProvider).sendFileMessage(
+          context: context,
+          file: file,
+          messageType: messageType,
+          receiverUserId: widget.receiverUserId,
+        );
+  }
+
+  void sendImage() async {
+    File? image;
+
+    image = await pickImageFromGallery(context);
+    if (image != null) {
+      sendFile(
+        file: image,
+        messageType: MessageType.image,
+      );
+    }
+  }
 
   void sendMesssage() {
     ref.read(chatControllerProvider).sendMessage(
@@ -88,7 +116,7 @@ class _BottomTextFieldState extends ConsumerState<BottomTextField> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
-                        onPressed: () {},
+                        onPressed: sendImage,
                         icon: Icon(
                           Icons.camera_alt,
                           color: Colors.grey,

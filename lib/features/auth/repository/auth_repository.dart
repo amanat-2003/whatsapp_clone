@@ -31,6 +31,12 @@ class AuthRepository {
     required this.firestore,
   });
 
+  void setUserOnlineState(bool isOnline) async {
+    await firestore.collection('users').doc(auth.currentUser!.uid).update({
+      'isOnline': isOnline,
+    });
+  }
+
   void takeToMobileLayoutScreen({
     required BuildContext context,
   }) {

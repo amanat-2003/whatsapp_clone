@@ -31,6 +31,10 @@ class AuthController {
     required this.ref,
   });
 
+  void setUserOnlineState(bool isOnline) {
+    repository.setUserOnlineState(isOnline);
+  }
+
   void takeToMobileLayoutScreen({
     required BuildContext context,
   }) {

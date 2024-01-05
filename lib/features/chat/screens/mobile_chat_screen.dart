@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,7 +9,7 @@ import 'package:whatsapp_clone/common/widgets/loader.dart';
 import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
 import 'package:whatsapp_clone/features/chat/widgets/bottom_text_field.dart';
 import 'package:whatsapp_clone/models/user_model.dart';
-import 'package:whatsapp_clone/widgets/chat_list.dart';
+import 'package:whatsapp_clone/features/chat/widgets/chat_list.dart';
 
 class MobileChatScreen extends ConsumerWidget {
   static const routeName = "/mobile-chat-screen";
@@ -20,6 +22,7 @@ class MobileChatScreen extends ConsumerWidget {
     required this.name,
     required this.uid,
   }) : super(key: key);
+
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

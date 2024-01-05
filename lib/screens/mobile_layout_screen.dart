@@ -5,16 +5,44 @@ import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
 import 'package:whatsapp_clone/features/select_contacts/screens/select_contacts_screen.dart';
 import 'package:whatsapp_clone/widgets/contacts_list.dart';
 
-class MobileLayoutScreen extends ConsumerWidget {
+class MobileLayoutScreen extends ConsumerStatefulWidget {
   static const routeName = "/mobile-layout-screen";
   const MobileLayoutScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(getCurrentUserProvider).whenData(
-      (value) {
-      },
-    );
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _MobileLayoutScreenState();
+}
+
+class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
+    with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      case AppLifecycleState.resumed:
+        ref.read(authControllerProvider).setUserOnlineState(true);
+        break;
+      default:
+        ref.read(authControllerProvider).setUserOnlineState(false);
+        break;
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
