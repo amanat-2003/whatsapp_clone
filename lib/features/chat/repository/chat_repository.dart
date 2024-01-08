@@ -30,6 +30,49 @@ class ChatRepository {
     required this.auth,
   });
 
+  void sendGIF({
+    required BuildContext context,
+    required String gifUrl,
+    required String receiverUserId,
+    required UserModel senderUserModel,
+  }) async {
+    try {
+      final time = DateTime.now();
+
+      final indexOfId = gifUrl.lastIndexOf('-') + 1;
+
+      final idPart = gifUrl.substring(indexOfId);
+
+      final actualGIFUrl = "https://i.giphy.com/media/$idPart/200.gif";
+
+      final receiverUser =
+          await firestore.collection('users').doc(receiverUserId).get();
+
+      final receiverUserModel = UserModel.fromMap(receiverUser.data()!);
+
+      _sendDataToContactChatSubCollection(
+        text: '🖼️ GIF',
+        time: time,
+        senderUserModel: senderUserModel,
+        receiverUserModel: receiverUserModel,
+      );
+
+      final messageId = Uuid().v1();
+
+      _sendDataToMessageSubCollection(
+        text: actualGIFUrl,
+        time: time,
+        messageId: messageId,
+        isSeen: false,
+        senderUserId: senderUserModel.uid,
+        receiverUserId: receiverUserId,
+        messageType: MessageType.gif,
+      );
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
   void sendFileMessage({
     required BuildContext context,
     required File file,

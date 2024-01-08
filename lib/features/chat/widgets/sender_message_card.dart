@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+
 import 'package:whatsapp_clone/colors.dart';
+import 'package:whatsapp_clone/common/enums/message_type.dart';
+import 'package:whatsapp_clone/features/chat/widgets/display_message_or_file.dart';
 
 class SenderMessageCard extends StatelessWidget {
   const SenderMessageCard({
     Key? key,
-    required this.message,
+    required this.text,
     required this.date,
+    required this.messageType,
   }) : super(key: key);
-  final String message;
+  final String text;
   final String date;
+  final MessageType messageType;
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +37,9 @@ class SenderMessageCard extends StatelessWidget {
                   top: 5,
                   bottom: 20,
                 ),
-                child: Text(
-                  message,
-                  style: const TextStyle(
-                    fontSize: 16,
-                  ),
+                child: DisplayMessageOrFile(
+                  text: text,
+                  messageType: messageType,
                 ),
               ),
               Positioned(

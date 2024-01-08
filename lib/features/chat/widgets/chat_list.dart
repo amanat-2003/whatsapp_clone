@@ -47,13 +47,15 @@ class _ChatListState extends ConsumerState<ChatList> {
               if (messageModel.senderUserId ==
                   FirebaseAuth.instance.currentUser!.uid) {
                 return MyMessageCard(
-                  message: messageModel.text,
+                  text: messageModel.text,
                   date: DateFormat('h:mm a').format(messageModel.time),
+                  messageType: messageModel.messageType,
                 );
               }
               return SenderMessageCard(
-                message: messageModel.text,
+                text: messageModel.text,
                 date: DateFormat('h:mm a').format(messageModel.time),
+                messageType: messageModel.messageType,
               );
             },
           );

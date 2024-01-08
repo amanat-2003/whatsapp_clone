@@ -28,6 +28,23 @@ class ChatController {
     required this.ref,
   });
 
+  void sendGIF({
+    required BuildContext context,
+    required String gifUrl,
+    required String receiverUserId,
+  }) {
+    ref.watch(getCurrentUserProvider).whenData(
+      (value) {
+        repository.sendGIF(
+          context: context,
+          gifUrl: gifUrl,
+          receiverUserId: receiverUserId,
+          senderUserModel: value!,
+        );
+      },
+    );
+  }
+
   void sendFileMessage({
     required BuildContext context,
     required File file,
