@@ -58,8 +58,11 @@ class SenderMessageCard extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 if (!repliedMessageModel.isNull)
-                  MessageCardReplyPreview(
-                    messageReplyModel: repliedMessageModel,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: MessageCardReplyPreview(
+                      messageReplyModel: repliedMessageModel,
+                    ),
                   ),
                 Stack(
                   children: [
@@ -71,7 +74,7 @@ class SenderMessageCard extends ConsumerWidget {
                         bottom: 20,
                       ),
                       child: ConstrainedBox(
-                        constraints: BoxConstraints(minWidth: 100),
+                        constraints: BoxConstraints(minWidth: 70),
                         child: DisplayMessageOrFile(
                           text: text,
                           messageType: messageType,

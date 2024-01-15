@@ -82,7 +82,7 @@ class MyMessageCard extends ConsumerWidget {
                               bottom: 25,
                             ),
                       child: ConstrainedBox(
-                        constraints: BoxConstraints(minWidth: 100),
+                        constraints: BoxConstraints(minWidth: 80),
                         child: DisplayMessageOrFile(
                           text: text,
                           messageType: messageType,
