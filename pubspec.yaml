@@ -43,14 +43,17 @@ dependencies:
   image_picker: ^1.0.5
   firebase_storage: ^11.5.6
   flutter_contacts: ^1.1.7+1
-  uuid: ^4.2.2
+  uuid: ^3.0.7
   intl: ^0.19.0
   cached_network_image: ^3.3.1
   cached_video_player: ^2.0.4
   emoji_picker_flutter: ^1.6.3
   enough_giphy_flutter: ^0.4.1
   path_provider: ^2.1.1
-  permission_handler: ^11.1.0
+  permission_handler: ^9.2.0
+  flutter_sound: ^9.2.13
+  audioplayers: ^5.2.1
+  swipe_to: ^1.0.5
 
 dev_dependencies:
   flutter_test:

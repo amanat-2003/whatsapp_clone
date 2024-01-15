@@ -7,7 +7,6 @@ import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
 import 'package:whatsapp_clone/features/chat/repository/chat_repository.dart';
 import 'package:whatsapp_clone/models/contact_chat.dart';
 import 'package:whatsapp_clone/models/message_model.dart';
-import 'package:whatsapp_clone/models/user_model.dart';
 
 final chatControllerProvider = Provider(
   (ref) {

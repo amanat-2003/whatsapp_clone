@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:whatsapp_clone/common/enums/message_type.dart';
@@ -14,15 +15,42 @@ class DisplayMessageOrFile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return messageType == MessageType.text
-        ? Text(
-            text,
-            style: const TextStyle(
-              fontSize: 16,
-            ),
-          )
-        : messageType == MessageType.image || messageType == MessageType.gif
-            ? CachedNetworkImage(imageUrl: text)
-            : CachedVideo(videoUrl: text);
+    bool isPlaying = false;
+    AudioPlayer audioPlayer = AudioPlayer();
+
+    return ConstrainedBox(
+      constraints: BoxConstraints(minWidth: 100),
+      child: messageType == MessageType.text
+          ? Text(
+              text,
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            )
+          : messageType == MessageType.image || messageType == MessageType.gif
+              ? CachedNetworkImage(imageUrl: text)
+              : messageType == MessageType.video
+                  ? CachedVideo(videoUrl: text)
+                  : StatefulBuilder(builder: (context, setState) {
+                      return IconButton(
+                        onPressed: () async {
+                          if (isPlaying) {
+                            await audioPlayer.pause();
+                            setState(() {
+                              isPlaying = false;
+                            });
+                          } else {
+                            await audioPlayer.play(UrlSource(text));
+                            setState(() {
+                              isPlaying = true;
+                            });
+                          }
+                        },
+                        icon: isPlaying
+                            ? Icon(Icons.pause_circle)
+                            : Icon(Icons.play_circle),
+                      );
+                    }),
+    );
   }
 }

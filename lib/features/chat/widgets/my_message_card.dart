@@ -1,11 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cached_video_player/cached_video_player.dart';
 import 'package:flutter/material.dart';
 
 import 'package:whatsapp_clone/colors.dart';
 import 'package:whatsapp_clone/common/enums/message_type.dart';
-import 'package:whatsapp_clone/features/chat/widgets/cached_video_widget.dart';
 import 'package:whatsapp_clone/features/chat/widgets/display_message_or_file.dart';
 
 class MyMessageCard extends StatelessWidget {
