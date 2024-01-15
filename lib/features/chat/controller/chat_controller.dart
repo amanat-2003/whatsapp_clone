@@ -7,6 +7,7 @@ import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
 import 'package:whatsapp_clone/features/chat/repository/chat_repository.dart';
 import 'package:whatsapp_clone/models/contact_chat.dart';
 import 'package:whatsapp_clone/models/message_model.dart';
+import 'package:whatsapp_clone/models/message_reply.dart';
 
 final chatControllerProvider = Provider(
   (ref) {
@@ -31,6 +32,7 @@ class ChatController {
     required BuildContext context,
     required String gifUrl,
     required String receiverUserId,
+    required MessageReplyModel messageReplyModel,
   }) {
     ref.watch(getCurrentUserProvider).whenData(
       (value) {
@@ -39,6 +41,7 @@ class ChatController {
           gifUrl: gifUrl,
           receiverUserId: receiverUserId,
           senderUserModel: value!,
+          messageReplyModel: messageReplyModel,
         );
       },
     );
@@ -49,6 +52,7 @@ class ChatController {
     required File file,
     required MessageType messageType,
     required String receiverUserId,
+    required MessageReplyModel messageReplyModel,
   }) {
     repository.sendFileMessage(
       context: context,
@@ -56,6 +60,7 @@ class ChatController {
       messageType: messageType,
       ref: ref,
       receiverUserId: receiverUserId,
+      messageReplyModel: messageReplyModel,
     );
   }
 
@@ -76,6 +81,7 @@ class ChatController {
     required BuildContext context,
     required String text,
     required String receiverUserId,
+    required MessageReplyModel messageReplyModel,
   }) {
     // late UserModel senderUserModel;
     // await ref.watch(getCurrentUserProvider).whenData((value) {
@@ -96,6 +102,7 @@ class ChatController {
           text: text,
           receiverUserId: receiverUserId,
           senderUserModel: value!,
+          messageReplyModel: messageReplyModel,
         );
       },
     );

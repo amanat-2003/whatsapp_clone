@@ -12,6 +12,9 @@ import 'package:whatsapp_clone/colors.dart';
 import 'package:whatsapp_clone/common/enums/message_type.dart';
 import 'package:whatsapp_clone/common/utils/utils.dart';
 import 'package:whatsapp_clone/features/chat/controller/chat_controller.dart';
+import 'package:whatsapp_clone/features/chat/repository/message_reply_provider.dart';
+import 'package:whatsapp_clone/features/chat/widgets/message_reply_preview.dart';
+import 'package:whatsapp_clone/models/message_reply.dart';
 
 class BottomTextField extends ConsumerStatefulWidget {
   final String receiverUserId;
@@ -32,7 +35,9 @@ class _BottomTextFieldState extends ConsumerState<BottomTextField> {
   bool isRecorderInit = false;
   FlutterSoundRecorder? _soundRecorder;
 
-  void sendGIF() async {
+  void sendGIF({
+    required MessageReplyModel messageReplyModel,
+  }) async {
     GiphyGif? gif;
 
     gif = await pickGIF(context);
@@ -41,32 +46,41 @@ class _BottomTextFieldState extends ConsumerState<BottomTextField> {
             context: context,
             gifUrl: gif.url,
             receiverUserId: widget.receiverUserId,
+            messageReplyModel: messageReplyModel,
           );
+      cancelMessageReply(ref);
     }
   }
 
   void sendFile({
     required File file,
     required MessageType messageType,
+    required MessageReplyModel messageReplyModel,
   }) {
     ref.read(chatControllerProvider).sendFileMessage(
           context: context,
           file: file,
           messageType: messageType,
           receiverUserId: widget.receiverUserId,
+          messageReplyModel: messageReplyModel,
         );
   }
 
   void sendAudio({
     required File file,
+    required MessageReplyModel messageReplyModel,
   }) {
     sendFile(
       file: file,
       messageType: MessageType.audio,
+      messageReplyModel: messageReplyModel,
     );
+    cancelMessageReply(ref);
   }
 
-  void sendVideo() async {
+  void sendVideo({
+    required MessageReplyModel messageReplyModel,
+  }) async {
     File? video;
 
     video = await pickVideoFromGallery(context);
@@ -74,11 +88,15 @@ class _BottomTextFieldState extends ConsumerState<BottomTextField> {
       sendFile(
         file: video,
         messageType: MessageType.video,
+        messageReplyModel: messageReplyModel,
       );
+      cancelMessageReply(ref);
     }
   }
 
-  void sendImage() async {
+  void sendImage({
+    required MessageReplyModel messageReplyModel,
+  }) async {
     File? image;
 
     image = await pickImageFromGallery(context);
@@ -86,17 +104,23 @@ class _BottomTextFieldState extends ConsumerState<BottomTextField> {
       sendFile(
         file: image,
         messageType: MessageType.image,
+        messageReplyModel: messageReplyModel,
       );
+      cancelMessageReply(ref);
     }
   }
 
-  void sendMesssageOrRecordAudio() async {
+  void sendMessageOrRecordAudio({
+    required MessageReplyModel messageReplyModel,
+  }) async {
     if (isTypedSomething) {
       ref.read(chatControllerProvider).sendMessage(
             context: context,
             text: _messageController.text,
             receiverUserId: widget.receiverUserId,
+            messageReplyModel: messageReplyModel,
           );
+      cancelMessageReply(ref);
       setState(() {
         _messageController.text = '';
       });
@@ -113,7 +137,10 @@ class _BottomTextFieldState extends ConsumerState<BottomTextField> {
           setState(() {
             isRecording = false;
           });
-          sendAudio(file: File(path));
+          sendAudio(
+            file: File(path),
+            messageReplyModel: messageReplyModel,
+          );
         } else {
           await _soundRecorder!.startRecorder(toFile: path);
           setState(() {
@@ -152,10 +179,20 @@ class _BottomTextFieldState extends ConsumerState<BottomTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final messageReply = ref.watch(messageReplyProvider);
+    final isMessageReplyActive = messageReply != null;
+    MessageReplyModel messageReplyModel = messageReply ??
+        MessageReplyModel(
+            userName: "",
+            isMe: true,
+            type: MessageType.text,
+            text: "",
+            userId: "");
     return SizedBox(
       width: double.maxFinite,
       child: Column(
         children: [
+          if (isMessageReplyActive) MessageReplyPreview(),
           Row(
             children: [
               Expanded(
@@ -198,7 +235,9 @@ class _BottomTextFieldState extends ConsumerState<BottomTextField> {
                             ),
                           ),
                           IconButton(
-                            onPressed: sendGIF,
+                            onPressed: () => sendGIF(
+                              messageReplyModel: messageReplyModel,
+                            ),
                             icon: Icon(
                               Icons.gif,
                               color: Colors.grey,
@@ -214,14 +253,18 @@ class _BottomTextFieldState extends ConsumerState<BottomTextField> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           IconButton(
-                            onPressed: sendImage,
+                            onPressed: () => sendImage(
+                              messageReplyModel: messageReplyModel,
+                            ),
                             icon: Icon(
                               Icons.camera_alt,
                               color: Colors.grey,
                             ),
                           ),
                           IconButton(
-                            onPressed: sendVideo,
+                            onPressed: () => sendVideo(
+                              messageReplyModel: messageReplyModel,
+                            ),
                             icon: Icon(
                               Icons.attach_file,
                               color: Colors.grey,
@@ -245,7 +288,9 @@ class _BottomTextFieldState extends ConsumerState<BottomTextField> {
               Padding(
                 padding: const EdgeInsets.all(6),
                 child: GestureDetector(
-                  onTap: sendMesssageOrRecordAudio,
+                  onTap: () => sendMessageOrRecordAudio(
+                    messageReplyModel: messageReplyModel,
+                  ),
                   child: CircleAvatar(
                     backgroundColor: const Color(0xFF128C7E),
                     radius: 23,

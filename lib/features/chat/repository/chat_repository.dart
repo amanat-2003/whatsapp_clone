@@ -12,6 +12,7 @@ import 'package:whatsapp_clone/common/repository/file_upload_repository.dart';
 import 'package:whatsapp_clone/common/utils/utils.dart';
 import 'package:whatsapp_clone/models/contact_chat.dart';
 import 'package:whatsapp_clone/models/message_model.dart';
+import 'package:whatsapp_clone/models/message_reply.dart';
 import 'package:whatsapp_clone/models/user_model.dart';
 
 final chatRepositoryProvider = Provider(
@@ -35,6 +36,7 @@ class ChatRepository {
     required String gifUrl,
     required String receiverUserId,
     required UserModel senderUserModel,
+    required MessageReplyModel messageReplyModel,
   }) async {
     try {
       final time = DateTime.now();
@@ -64,9 +66,10 @@ class ChatRepository {
         time: time,
         messageId: messageId,
         isSeen: false,
-        senderUserId: senderUserModel.uid,
-        receiverUserId: receiverUserId,
+        senderUserModel: senderUserModel,
+        receiverUserModel: receiverUserModel,
         messageType: MessageType.gif,
+        messageReplyModel: messageReplyModel,
       );
     } catch (e) {
       showSnackBar(context, e.toString());
@@ -79,6 +82,7 @@ class ChatRepository {
     required MessageType messageType,
     required ProviderRef ref,
     required String receiverUserId,
+    required MessageReplyModel messageReplyModel,
   }) async {
     try {
       final messageId = Uuid().v1();
@@ -134,9 +138,10 @@ class ChatRepository {
         time: time,
         messageId: messageId,
         isSeen: false,
-        senderUserId: senderUserId,
-        receiverUserId: receiverUserId,
+        senderUserModel: senderUserModel,
+        receiverUserModel: receiverUserModel,
         messageType: messageType,
+        messageReplyModel: messageReplyModel,
       );
     } catch (e) {
       showSnackBar(context, e.toString());
@@ -236,26 +241,28 @@ class ChatRepository {
     required DateTime time,
     required String messageId,
     required bool isSeen,
-    required String senderUserId,
-    required String receiverUserId,
+    required UserModel senderUserModel,
+    required UserModel receiverUserModel,
     required MessageType messageType,
+    required MessageReplyModel messageReplyModel,
   }) async {
     final message = MessageModel(
       text: text,
       time: time,
       messageId: messageId,
       isSeen: isSeen,
-      senderUserId: senderUserId,
-      receiverUserId: receiverUserId,
+      senderUserModel: senderUserModel,
+      receiverUserModel: receiverUserModel,
       messageType: messageType,
+      messageReplyModel: messageReplyModel,
     );
 
     // for display on sender side
     await firestore
         .collection('users')
-        .doc(senderUserId)
+        .doc(senderUserModel.uid)
         .collection('chats')
-        .doc(receiverUserId)
+        .doc(receiverUserModel.uid)
         .collection('messages')
         .doc(messageId)
         .set(message.toMap());
@@ -263,9 +270,9 @@ class ChatRepository {
     // for display on receiver side
     await firestore
         .collection('users')
-        .doc(receiverUserId)
+        .doc(receiverUserModel.uid)
         .collection('chats')
-        .doc(senderUserId)
+        .doc(senderUserModel.uid)
         .collection('messages')
         .doc(messageId)
         .set(message.toMap());
@@ -276,6 +283,7 @@ class ChatRepository {
     required String text,
     required String receiverUserId,
     required UserModel senderUserModel,
+    required MessageReplyModel messageReplyModel,
   }) async {
     try {
       final time = DateTime.now();
@@ -299,9 +307,10 @@ class ChatRepository {
         time: time,
         messageId: messageId,
         isSeen: false,
-        senderUserId: senderUserModel.uid,
-        receiverUserId: receiverUserId,
+        senderUserModel: senderUserModel ,
+        receiverUserModel: receiverUserModel,
         messageType: MessageType.text,
+        messageReplyModel: messageReplyModel,
       );
     } catch (e) {
       showSnackBar(context, e.toString());

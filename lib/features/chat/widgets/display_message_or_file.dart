@@ -18,39 +18,36 @@ class DisplayMessageOrFile extends StatelessWidget {
     bool isPlaying = false;
     AudioPlayer audioPlayer = AudioPlayer();
 
-    return ConstrainedBox(
-      constraints: BoxConstraints(minWidth: 100),
-      child: messageType == MessageType.text
-          ? Text(
-              text,
-              style: const TextStyle(
-                fontSize: 16,
-              ),
-            )
-          : messageType == MessageType.image || messageType == MessageType.gif
-              ? CachedNetworkImage(imageUrl: text)
-              : messageType == MessageType.video
-                  ? CachedVideo(videoUrl: text)
-                  : StatefulBuilder(builder: (context, setState) {
-                      return IconButton(
-                        onPressed: () async {
-                          if (isPlaying) {
-                            await audioPlayer.pause();
-                            setState(() {
-                              isPlaying = false;
-                            });
-                          } else {
-                            await audioPlayer.play(UrlSource(text));
-                            setState(() {
-                              isPlaying = true;
-                            });
-                          }
-                        },
-                        icon: isPlaying
-                            ? Icon(Icons.pause_circle)
-                            : Icon(Icons.play_circle),
-                      );
-                    }),
-    );
+    return messageType == MessageType.text
+        ? Text(
+            text,
+            style: const TextStyle(
+              fontSize: 16,
+            ),
+          )
+        : messageType == MessageType.image || messageType == MessageType.gif
+            ? CachedNetworkImage(imageUrl: text)
+            : messageType == MessageType.video
+                ? CachedVideo(videoUrl: text)
+                : StatefulBuilder(builder: (context, setState) {
+                    return IconButton(
+                      onPressed: () async {
+                        if (isPlaying) {
+                          await audioPlayer.pause();
+                          setState(() {
+                            isPlaying = false;
+                          });
+                        } else {
+                          await audioPlayer.play(UrlSource(text));
+                          setState(() {
+                            isPlaying = true;
+                          });
+                        }
+                      },
+                      icon: isPlaying
+                          ? Icon(Icons.pause_circle)
+                          : Icon(Icons.play_circle),
+                    );
+                  });
   }
 }

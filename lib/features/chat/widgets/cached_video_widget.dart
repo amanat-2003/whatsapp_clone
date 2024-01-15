@@ -34,32 +34,36 @@ class _CachedVideoState extends State<CachedVideo> {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: _videoController.value.aspectRatio,
-      child: Stack(
-        children: [
-          _videoController.value.isInitialized
-              ? CachedVideoPlayer(
-                  _videoController,
-                )
-              : Loader(),
-          Center(
-            child: IconButton(
-              iconSize: 60,
-              onPressed: () {
-                setState(() {
-                  _videoController.value.isPlaying
-                      ? _videoController.pause()
-                      : _videoController.play();
-                });
-              },
-              icon: _videoController.value.isPlaying
-                  ? Icon(Icons.pause_circle)
-                  : Icon(Icons.play_circle),
-            ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return AspectRatio(
+          aspectRatio: _videoController.value.aspectRatio,
+          child: Stack(
+            children: [
+              _videoController.value.isInitialized
+                  ? CachedVideoPlayer(
+                      _videoController,
+                    )
+                  : Loader(),
+              Center(
+                child: IconButton(
+                  iconSize: constraints.maxWidth/7,
+                  onPressed: () {
+                    setState(() {
+                      _videoController.value.isPlaying
+                          ? _videoController.pause()
+                          : _videoController.play();
+                    });
+                  },
+                  icon: _videoController.value.isPlaying
+                      ? Icon(Icons.pause_circle)
+                      : Icon(Icons.play_circle),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      }
     );
   }
 }
