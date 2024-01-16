@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -44,6 +46,22 @@ class _ChatListState extends ConsumerState<ChatList> {
             itemCount: messageModelList.length,
             itemBuilder: (context, index) {
               final messageModel = messageModelList[index];
+
+              log("(!messageModel.isSeen) = "+(!messageModel.isSeen).toString());
+              log("(messageModel.receiverUserModel.uid == FirebaseAuth.instance.currentUser!.uid) = " +
+                  (messageModel.receiverUserModel.uid ==
+                          FirebaseAuth.instance.currentUser!.uid)
+                      .toString());
+
+              if (!messageModel.isSeen &&
+                  messageModel.receiverUserModel.uid ==
+                      FirebaseAuth.instance.currentUser!.uid) {
+                ref.read(chatControllerProvider).setMessageSeen(
+                      context: context,
+                      messageModel: messageModel,
+                    );
+              }
+
               if (messageModel.senderUserModel.uid ==
                   FirebaseAuth.instance.currentUser!.uid) {
                 return MyMessageCard(
@@ -53,6 +71,7 @@ class _ChatListState extends ConsumerState<ChatList> {
                   messageType: messageModel.messageType,
                   repliedMessageModel: messageModel.messageReplyModel,
                   senderUserId: messageModel.senderUserModel.uid,
+                  isSeen: messageModel.isSeen,
                 );
               }
               return SenderMessageCard(

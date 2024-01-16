@@ -17,6 +17,7 @@ class MyMessageCard extends ConsumerWidget {
   final String senderUserId;
   final MessageType messageType;
   final MessageReplyModel repliedMessageModel;
+  final bool isSeen;
 
   const MyMessageCard({
     Key? key,
@@ -26,6 +27,7 @@ class MyMessageCard extends ConsumerWidget {
     required this.senderUserId,
     required this.messageType,
     required this.repliedMessageModel,
+    required this.isSeen,
   }) : super(key: key);
 
   @override
@@ -104,10 +106,10 @@ class MyMessageCard extends ConsumerWidget {
                           const SizedBox(
                             width: 5,
                           ),
-                          const Icon(
-                            Icons.done_all,
+                          Icon(
+                            isSeen ? Icons.done_all : Icons.done,
                             size: 20,
-                            color: Colors.white60,
+                            color: isSeen ? Colors.blue : Colors.white60,
                           ),
                         ],
                       ),

@@ -28,6 +28,16 @@ class ChatController {
     required this.ref,
   });
 
+  void setMessageSeen({
+    required BuildContext context,
+    required MessageModel messageModel,
+  }) {
+    repository.setMessageSeen(
+      context: context,
+      messageModel: messageModel,
+    );
+  }
+
   void sendGIF({
     required BuildContext context,
     required String gifUrl,

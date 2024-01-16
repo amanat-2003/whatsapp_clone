@@ -31,6 +31,31 @@ class ChatRepository {
     required this.auth,
   });
 
+  void setMessageSeen({
+    required BuildContext context,
+    required MessageModel messageModel,
+  }) async {
+    // for display on sender side
+    await firestore
+        .collection('users')
+        .doc(messageModel.senderUserModel.uid)
+        .collection('chats')
+        .doc(messageModel.receiverUserModel.uid)
+        .collection('messages')
+        .doc(messageModel.messageId)
+        .update({"isSeen": true});
+
+    // for display on receiver side
+    await firestore
+        .collection('users')
+        .doc(messageModel.receiverUserModel.uid)
+        .collection('chats')
+        .doc(messageModel.senderUserModel.uid)
+        .collection('messages')
+        .doc(messageModel.messageId)
+        .update({"isSeen": true});
+  }
+
   void sendGIF({
     required BuildContext context,
     required String gifUrl,
@@ -307,7 +332,7 @@ class ChatRepository {
         time: time,
         messageId: messageId,
         isSeen: false,
-        senderUserModel: senderUserModel ,
+        senderUserModel: senderUserModel,
         receiverUserModel: receiverUserModel,
         messageType: MessageType.text,
         messageReplyModel: messageReplyModel,

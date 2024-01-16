@@ -123,6 +123,7 @@ class _BottomTextFieldState extends ConsumerState<BottomTextField> {
       cancelMessageReply(ref);
       setState(() {
         _messageController.text = '';
+        isTypedSomething = false;
       });
     } else {
       try {
