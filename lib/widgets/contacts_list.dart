@@ -66,7 +66,7 @@ class ContactsList extends ConsumerWidget {
                                     radius: 30,
                                   ),
                                   trailing: Text(
-                                    DateFormat('h:mm a')
+                                    DateFormat('EEEE, h:mm a')
                                         .format(contactChat.time),
                                     style: const TextStyle(
                                       color: Colors.grey,

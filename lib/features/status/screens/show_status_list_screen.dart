@@ -64,7 +64,7 @@ class ShowStatusListScreen extends ConsumerWidget {
                             radius: 30,
                           ),
                           trailing: Text(
-                            DateFormat('h:mm a').format(
+                            DateFormat('EEEE, h:mm a').format(
                                 statusModel.statusEntities[0].timePosted),
                             style: const TextStyle(
                               color: Colors.grey,

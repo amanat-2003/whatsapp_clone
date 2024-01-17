@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:developer';
 import 'dart:io';
 
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
+
 import 'package:whatsapp_clone/common/enums/message_type.dart';
 import 'package:whatsapp_clone/common/repository/file_upload_repository.dart';
 import 'package:whatsapp_clone/common/utils/utils.dart';
@@ -16,22 +18,25 @@ import 'package:whatsapp_clone/models/user_model.dart';
 final statusRepositoryProvider = Provider((ref) => StatusRepository(
       auth: FirebaseAuth.instance,
       firestore: FirebaseFirestore.instance,
+      ref: ref,
     ));
 
 class StatusRepository {
   final FirebaseAuth auth;
   final FirebaseFirestore firestore;
+  final ProviderRef ref;
 
   StatusRepository({
     required this.auth,
     required this.firestore,
+    required this.ref,
   });
 
   Future<void> uploadGIFStatusEntity({
     required BuildContext context,
     required UserModel userModel,
     required String gifUrl,
-  })async {
+  }) async {
     final indexOfId = gifUrl.lastIndexOf('-') + 1;
 
     final idPart = gifUrl.substring(indexOfId);
@@ -53,7 +58,7 @@ class StatusRepository {
     required BuildContext context,
     required UserModel userModel,
     required String statusText,
-  })async {
+  }) async {
     final statusEntityId = Uuid().v1();
 
     await _uploadStatusEntity(
@@ -70,7 +75,6 @@ class StatusRepository {
     required UserModel userModel,
     required File statusMedia,
     required MessageType statusEntityType,
-    required ProviderRef ref,
   }) async {
     try {
       final statusEntityId = Uuid().v1();
@@ -91,7 +95,7 @@ class StatusRepository {
     }
   }
 
-  Future<void> _uploadStatusEntity({  
+  Future<void> _uploadStatusEntity({
     required BuildContext context,
     required UserModel userModel,
     required String statusMediaText,
@@ -126,8 +130,28 @@ class StatusRepository {
 
         statusEntities.add(statusEntity);
 
+        List<StatusEntity> filteredStatusEntities = [];
+
+        for (var i in statusEntities) {
+          if (i.timePosted.isBefore(
+            DateTime.now().subtract(Duration(hours: 24)),
+          )) {
+            if (i.statusEntityType == MessageType.image ||
+                i.statusEntityType == MessageType.video ||
+                i.statusEntityType == MessageType.audio)
+              await ref
+                  .watch(fileUploadRepositoryProvider)
+                  .deleteFromFirebaseStorage(
+                    context,
+                    "status/${i.statusEntityType.stringValue}/${userModel.uid}/${i.statusEntityId}",
+                  );
+          } else {
+            filteredStatusEntities.add(i);
+          }
+        }
+
         await firestore.collection('status').doc(userModel.uid).update({
-          "statusEntities": statusEntities
+          "statusEntities": filteredStatusEntities
               .map((statusEntity) => statusEntity.toMap())
               .toList(),
         });

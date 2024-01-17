@@ -36,4 +36,20 @@ class FileUploadRepository {
     }
     return downloadUrl;
   }
+
+  Future<void> deleteFromFirebaseStorage(
+    BuildContext context,
+    String path,
+  ) async {
+    try {
+      final storageRef = storage.ref();
+      // Create a reference to the file to delete
+      final pathRef = storageRef.child(path);
+
+      // Delete the file
+      await pathRef.delete();
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
 }

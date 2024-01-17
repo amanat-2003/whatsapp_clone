@@ -62,7 +62,6 @@ class StatusController {
         userModel: currentUserModel!,
         statusMedia: statusMedia,
         statusEntityType: statusEntityType,
-        ref: ref,
       );
     });
   }
