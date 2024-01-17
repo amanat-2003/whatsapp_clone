@@ -60,6 +60,11 @@ class MessageModel {
 
   factory MessageModel.fromJson(String source) =>
       MessageModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() {
+    return 'MessageModel(text: $text,\n time: $time, messageId: $messageId,\n isSeen: $isSeen,\n senderUserModel: $senderUserModel,\n receiverUserModel: $receiverUserModel,\n messageType: $messageType,\n messageReplyModel: $messageReplyModel,\n)\n';
+  }
 }
 
   // final String repliedMessageUserName;

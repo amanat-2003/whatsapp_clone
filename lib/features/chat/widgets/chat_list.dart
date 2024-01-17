@@ -47,11 +47,17 @@ class _ChatListState extends ConsumerState<ChatList> {
             itemBuilder: (context, index) {
               final messageModel = messageModelList[index];
 
-              log("(!messageModel.isSeen) = "+(!messageModel.isSeen).toString());
-              log("(messageModel.receiverUserModel.uid == FirebaseAuth.instance.currentUser!.uid) = " +
-                  (messageModel.receiverUserModel.uid ==
-                          FirebaseAuth.instance.currentUser!.uid)
-                      .toString());
+              if (index == 1) {
+                // log(messageModel.toString());
+                log(messageModel.toJson());
+              }
+
+              // log("(!messageModel.isSeen) = " +
+              //     (!messageModel.isSeen).toString());
+              // log("(messageModel.receiverUserModel.uid == FirebaseAuth.instance.currentUser!.uid) = " +
+              //     (messageModel.receiverUserModel.uid ==
+              //             FirebaseAuth.instance.currentUser!.uid)
+              //         .toString());
 
               if (!messageModel.isSeen &&
                   messageModel.receiverUserModel.uid ==

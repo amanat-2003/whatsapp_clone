@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/colors.dart';
 import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
 import 'package:whatsapp_clone/features/select_contacts/screens/select_contacts_screen.dart';
+import 'package:whatsapp_clone/features/status/controller/status_controller.dart';
+import 'package:whatsapp_clone/features/status/screens/add_status_screen.dart';
+import 'package:whatsapp_clone/features/status/screens/show_status_list_screen.dart';
 import 'package:whatsapp_clone/widgets/contacts_list.dart';
 
 class MobileLayoutScreen extends ConsumerStatefulWidget {
@@ -15,10 +18,13 @@ class MobileLayoutScreen extends ConsumerStatefulWidget {
 }
 
 class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
-    with WidgetsBindingObserver {
+    with WidgetsBindingObserver, TickerProviderStateMixin {
+  late TabController tabBarController;
+
   @override
   void initState() {
     super.initState();
+    tabBarController = TabController(length: 3, vsync: this);
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -41,6 +47,7 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
   @override
   void dispose() {
     super.dispose();
+    tabBarController.dispose();
     WidgetsBinding.instance.removeObserver(this);
   }
 
@@ -86,7 +93,8 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
               onPressed: () {},
             ),
           ],
-          bottom: const TabBar(
+          bottom: TabBar(
+            controller: tabBarController,
             indicatorColor: tabColor,
             indicatorWeight: 4,
             labelColor: tabColor,
@@ -107,10 +115,22 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
             ],
           ),
         ),
-        body: const ContactsList(),
+        body: TabBarView(
+          controller: tabBarController,
+          children: [
+            ContactsList(),
+            ShowStatusListScreen(),
+            Text('Calls'),
+          ],
+        ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () =>
-              Navigator.of(context).pushNamed(SelectContactsScreen.routeName),
+          onPressed: () {
+            if (tabBarController.index == 0) {
+              Navigator.of(context).pushNamed(SelectContactsScreen.routeName);
+            } else if (tabBarController.index == 1) {
+              Navigator.of(context).pushNamed(AddStatusScreen.routeName);
+            } else if (tabBarController.index == 2) {}
+          },
           backgroundColor: tabColor,
           child: const Icon(
             Icons.comment,

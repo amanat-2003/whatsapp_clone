@@ -184,7 +184,7 @@ class ChatRepository {
           .collection('messages')
           .orderBy('time')
           .snapshots()
-          .map((event) {
+          .asyncMap((event) {
         final List<MessageModel> messageModelList = [];
         for (var document in event.docs) {
           final messsageModel = MessageModel.fromMap(document.data());

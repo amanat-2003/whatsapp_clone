@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:whatsapp_clone/common/enums/message_type.dart';
@@ -19,7 +20,7 @@ class MessageReplyModel {
 
   @override
   String toString() {
-    return 'MessageReply(userName: $userName, userId: $userId, isMe: $isMe, type: $type, text: $text)';
+    return 'MessageReplyModel(userId: $userId, userName: $userName, isMe: $isMe, type: $type, text: $text)';
   }
 
   Map<String, dynamic> toMap() {
