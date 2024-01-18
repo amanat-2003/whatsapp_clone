@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/colors.dart';
-import 'package:whatsapp_clone/common/screens/loading_screen.dart';
-import 'package:whatsapp_clone/common/screens/error_screen.dart';
-import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
 import 'package:whatsapp_clone/features/auth/repository/is_loggedin_provider.dart';
 import 'package:whatsapp_clone/features/landing/screens/landing_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
