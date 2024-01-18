@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:whatsapp_clone/colors.dart';
 import 'package:whatsapp_clone/common/widgets/loader.dart';
 import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
+import 'package:whatsapp_clone/features/auth/repository/is_loggedin_provider.dart';
 import 'package:whatsapp_clone/features/chat/controller/chat_controller.dart';
 import 'package:whatsapp_clone/features/chat/screens/mobile_chat_screen.dart';
 import 'package:whatsapp_clone/models/contact_chat.dart';
@@ -83,7 +84,10 @@ class ContactsList extends ConsumerWidget {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: ref.read(authControllerProvider).logOut,
+                    onPressed: () {
+                      ref.read(authControllerProvider).logOut();
+                      ref.read(isLoggedInProvider.notifier).state = false;
+                    },
                     child: Text('Logout'),
                   ),
                 ],

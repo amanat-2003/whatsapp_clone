@@ -11,7 +11,7 @@ import 'package:whatsapp_clone/features/status/widgets/automatic_music_playing_w
 import 'package:whatsapp_clone/models/status_model.dart';
 
 class ShowStatusScreen extends StatefulWidget {
-  static const routeName = "/show-status-screen";
+  static const routeName = "/show-status-screen"; 
 
   final StatusModel statusModel;
   const ShowStatusScreen({
@@ -59,7 +59,7 @@ class _ShowStatusScreenState extends State<ShowStatusScreen> {
               title: statusEntity.statusMediaText,
               backgroundColor: getRandomColor(),
               textStyle: TextStyle(fontSize: 30),
-            ),
+            ), 
           );
         } else if (statusEntity.statusEntityType == MessageType.image) {
           storyItems.add(StoryItem.pageImage(
