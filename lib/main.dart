@@ -23,52 +23,56 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'WorldApp',
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: backgroundColor,
       ),
-      home: Consumer(builder: (_, ref, child) {
-        ref.listen(isLoadingProvider, (__, isLoading) {
-          if (isLoading) {
-            LoadingOverlay.instance().show(context: context);
-          } else {
-            LoadingOverlay.instance().hide();
-          }
-        });
+      home: Overlay(initialEntries: [
+        OverlayEntry(builder: (context) {
+          return Consumer(builder: (_, ref, child) {
+            ref.listen(isLoadingProvider, (__, isLoading) {
+              if (isLoading) {
+                LoadingOver.instance().show(context: context);
+              } else {
+                LoadingOver.instance().hide();
+              }
+            });
 
-        final isLoggedIn = ref.watch(isLoggedInProvider);
+            final isLoggedIn = ref.watch(isLoggedInProvider);
 
-        if (isLoggedIn) {
-          return const MobileLayoutScreen();
-        } else {
-          return const LandingScreen();
-        }
+            if (isLoggedIn) {
+              return const MobileLayoutScreen();
+            } else {
+              return const LandingScreen();
+            }
 
-        // return ref.watch(getCurrentUserProvider).when(
-        //   data: (user) {
-        //     if (user == null) {
-        //       return const LandingScreen();
-        //     } else {
-        //       return const MobileLayoutScreen();
-        //     }
-        //   },
-        //   error: (error, stackTrace) {
-        //     return ErrorScreen(
-        //       error: error.toString(),
-        //     );
-        //   },
-        //   loading: () {
-        //     return LoadingScreen();
-        //   },
-        // );
-      }),
+            // return ref.watch(getCurrentUserProvider).when(
+            //   data: (user) {
+            //     if (user == null) {
+            //       return const LandingScreen();
+            //     } else {
+            //       return const MobileLayoutScreen();
+            //     }
+            //   },
+            //   error: (error, stackTrace) {
+            //     return ErrorScreen(
+            //       error: error.toString(),
+            //     );
+            //   },
+            //   loading: () {
+            //     return LoadingScreen();
+            //   },
+            // );
+          });
+        }),
+      ]),
       onGenerateRoute: generateRoute,
     );
   }

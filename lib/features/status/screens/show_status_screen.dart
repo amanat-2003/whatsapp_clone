@@ -14,6 +14,7 @@ class ShowStatusScreen extends StatefulWidget {
   static const routeName = "/show-status-screen"; 
 
   final StatusModel statusModel;
+
   const ShowStatusScreen({
     Key? key,
     required this.statusModel,

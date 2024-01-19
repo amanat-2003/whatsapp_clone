@@ -25,12 +25,12 @@ class StatusController {
     required this.ref,
   });
 
-  Future<void> uploadTextStatusEntity({
+  void uploadTextStatusEntity({
     required BuildContext context,
     required String statusText,
   }) async {
-    ref.watch(getCurrentUserProvider).whenData((currentUserModel) async {
-      await repository.uploadTextStatusEntity(
+    ref.watch(getCurrentUserProvider).whenData((currentUserModel) {
+      repository.uploadTextStatusEntity(
         context: context,
         userModel: currentUserModel!,
         statusText: statusText,
@@ -38,12 +38,12 @@ class StatusController {
     });
   }
 
-  Future<void> uploadGIFStatusEntity({
+  void uploadGIFStatusEntity({
     required BuildContext context,
     required String gifUrl,
   }) async {
-    ref.watch(getCurrentUserProvider).whenData((currentUserModel) async {
-      await repository.uploadGIFStatusEntity(
+    ref.watch(getCurrentUserProvider).whenData((currentUserModel) {
+      repository.uploadGIFStatusEntity(
         context: context,
         userModel: currentUserModel!,
         gifUrl: gifUrl,
@@ -51,13 +51,13 @@ class StatusController {
     });
   }
 
-  Future<void> uploadPhotoVideoAudioStatusEntity({
+  void uploadPhotoVideoAudioStatusEntity({
     required BuildContext context,
     required File statusMedia,
     required MessageType statusEntityType,
   }) async {
-    ref.watch(getCurrentUserProvider).whenData((currentUserModel) async {
-      await repository.uploadPhotoVideoAudioStatusEntity(
+    ref.watch(getCurrentUserProvider).whenData((currentUserModel) {
+      repository.uploadPhotoVideoAudioStatusEntity(
         context: context,
         userModel: currentUserModel!,
         statusMedia: statusMedia,

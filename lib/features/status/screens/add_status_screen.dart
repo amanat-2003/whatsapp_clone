@@ -61,30 +61,28 @@ class _AddStatusFieldState extends ConsumerState<AddStatusField> {
 
     gif = await pickGIF(context);
     if (gif != null) {
-      await ref.read(statusControllerProvider).uploadGIFStatusEntity(
+      ref.read(statusControllerProvider).uploadGIFStatusEntity(
             context: context,
             gifUrl: gif.url,
           );
-      showSnackBar(context, "Status successfully uploaded");
-      Navigator.pop(context);
     }
   }
 
-  Future<void> _uploadPhotoVideoAudioStatusEntity({
+  void _uploadPhotoVideoAudioStatusEntity({
     required File statusMedia,
     required MessageType statusEntityType,
   }) async {
-    await ref.read(statusControllerProvider).uploadPhotoVideoAudioStatusEntity(
+    ref.read(statusControllerProvider).uploadPhotoVideoAudioStatusEntity(
           context: context,
           statusMedia: statusMedia,
           statusEntityType: statusEntityType,
         );
   }
 
-  Future<void> _uploadAudioStatusEntity({
+  void _uploadAudioStatusEntity({
     required File statusMedia,
   }) async {
-    await _uploadPhotoVideoAudioStatusEntity(
+    _uploadPhotoVideoAudioStatusEntity(
       statusMedia: statusMedia,
       statusEntityType: MessageType.audio,
     );
@@ -95,12 +93,10 @@ class _AddStatusFieldState extends ConsumerState<AddStatusField> {
 
     video = await pickVideoFromGallery(context);
     if (video != null) {
-      await _uploadPhotoVideoAudioStatusEntity(
+      _uploadPhotoVideoAudioStatusEntity(
         statusMedia: video,
         statusEntityType: MessageType.video,
       );
-      showSnackBar(context, "Status successfully uploaded");
-      Navigator.pop(context);
     }
   }
 
@@ -109,12 +105,10 @@ class _AddStatusFieldState extends ConsumerState<AddStatusField> {
 
     image = await pickImageFromGallery(context);
     if (image != null) {
-      await _uploadPhotoVideoAudioStatusEntity(
+      _uploadPhotoVideoAudioStatusEntity(
         statusMedia: image,
         statusEntityType: MessageType.image,
       );
-      showSnackBar(context, "Status successfully uploaded");
-      Navigator.pop(context);
     }
   }
 
@@ -131,9 +125,7 @@ class _AddStatusFieldState extends ConsumerState<AddStatusField> {
         setState(() {
           isRecording = false;
         });
-        await _uploadAudioStatusEntity(statusMedia: File(path));
-        showSnackBar(context, "Status successfully uploaded");
-        Navigator.pop(context);
+        _uploadAudioStatusEntity(statusMedia: File(path));
       } else {
         await _soundRecorder!.startRecorder(toFile: path);
         setState(() {
@@ -147,7 +139,7 @@ class _AddStatusFieldState extends ConsumerState<AddStatusField> {
 
   void uploadTextStatusEntity() async {
     if (isTypedSomething) {
-      await ref.read(statusControllerProvider).uploadTextStatusEntity(
+      ref.read(statusControllerProvider).uploadTextStatusEntity(
             context: context,
             statusText: _messageController.text,
           );
@@ -155,8 +147,6 @@ class _AddStatusFieldState extends ConsumerState<AddStatusField> {
         _messageController.text = '';
         isTypedSomething = false;
       });
-      showSnackBar(context, "Status successfully uploaded");
-      Navigator.pop(context);
     }
   }
 

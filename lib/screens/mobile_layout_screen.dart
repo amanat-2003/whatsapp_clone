@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/colors.dart';
 import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
-import 'package:whatsapp_clone/features/loading/providers/is_loading_provider.dart';
 import 'package:whatsapp_clone/features/select_contacts/screens/select_contacts_screen.dart';
+import 'package:whatsapp_clone/features/status/screens/add_status_screen.dart';
 import 'package:whatsapp_clone/features/status/screens/show_status_list_screen.dart';
 import 'package:whatsapp_clone/widgets/contacts_list.dart';
 
@@ -127,11 +127,7 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
             if (tabBarController.index == 0) {
               Navigator.of(context).pushNamed(SelectContactsScreen.routeName);
             } else if (tabBarController.index == 1) {
-              ref.read(isLoadingProvider.notifier).update((state) => true);
-              // ref.read(statusLoadingProvider.notifier).update((state) => true);
-              // Navigator.of(context).pushNamed(AddStatusScreen.routeName);
-              // LoadingOverlay.instance().show(context: context);
-              // LoadingOverlay.instance().hide();
+              Navigator.of(context).pushNamed(AddStatusScreen.routeName);
             } else if (tabBarController.index == 2) {}
           },
           backgroundColor: tabColor,
@@ -144,4 +140,3 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
     );
   }
 }
- 

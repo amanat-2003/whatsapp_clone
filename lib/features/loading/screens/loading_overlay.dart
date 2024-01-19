@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:whatsapp_clone/features/loading/controller/loading_screen_controller.dart';
 
-class LoadingOverlay {
-  LoadingOverlay._sharedInstance();
-  static final LoadingOverlay _shared = LoadingOverlay._sharedInstance();
-  factory LoadingOverlay.instance() => _shared;
+class LoadingOver {
+  LoadingOver._sharedInstance();
+  static final LoadingOver _shared = LoadingOver._sharedInstance();
+  factory LoadingOver.instance() => _shared;
 
   LoadingScreenController? controller;
 
@@ -65,7 +65,7 @@ class LoadingOverlay {
                     children: [
                       TextButton(
                         onPressed: () {
-                          LoadingOverlay.instance().hide();
+                          LoadingOver.instance().hide();
                         },
                         child: Text('Exit'),
                       ),

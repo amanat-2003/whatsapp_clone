@@ -81,7 +81,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 width: 90,
                 child: CustomButton(
                   onPressed: () {
-                    log('1');
                     if (_country != null && phoneController.text.isNotEmpty) {
                       authController.signInWithPhoneNumber(context,
                           '+${_country!.phoneCode}${phoneController.text.trim()}');

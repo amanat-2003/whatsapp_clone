@@ -269,7 +269,7 @@ class StatusRepository {
     ref.read(statusLoadingProvider.notifier).update((state) => val);
   }
 
-  Future<void> uploadGIFStatusEntity({
+  void uploadGIFStatusEntity({
     required BuildContext context,
     required UserModel userModel,
     required String gifUrl,
@@ -284,7 +284,7 @@ class StatusRepository {
 
     final statusEntityId = Uuid().v1();
 
-    await _uploadStatusEntity(
+    _uploadStatusEntity(
       context: context,
       userModel: userModel,
       statusMediaText: actualGIFUrl,
@@ -294,7 +294,7 @@ class StatusRepository {
     isLoading = false;
   }
 
-  Future<void> uploadTextStatusEntity({
+  void uploadTextStatusEntity({
     required BuildContext context,
     required UserModel userModel,
     required String statusText,
@@ -302,7 +302,7 @@ class StatusRepository {
     isLoading = true;
     final statusEntityId = Uuid().v1();
 
-    await _uploadStatusEntity(
+    _uploadStatusEntity(
       context: context,
       userModel: userModel,
       statusMediaText: statusText,
@@ -312,7 +312,7 @@ class StatusRepository {
     isLoading = false;
   }
 
-  Future<void> uploadPhotoVideoAudioStatusEntity({
+  void uploadPhotoVideoAudioStatusEntity({
     required BuildContext context,
     required UserModel userModel,
     required File statusMedia,
@@ -326,7 +326,7 @@ class StatusRepository {
           .uploadToFirebaseStorage(context, statusMedia,
               "status/${statusEntityType.stringValue}/${userModel.uid}/${statusEntityId}");
 
-      await _uploadStatusEntity(
+      _uploadStatusEntity(
         context: context,
         userModel: userModel,
         statusMediaText: fileUrl,
@@ -340,7 +340,7 @@ class StatusRepository {
     }
   }
 
-  Future<void> _uploadStatusEntity({
+  void _uploadStatusEntity({
     required BuildContext context,
     required UserModel userModel,
     required String statusMediaText,
@@ -380,7 +380,7 @@ class StatusRepository {
 
         for (var i in statusEntities) {
           if (i.timePosted.isBefore(
-            DateTime.now().subtract(Duration(hours: 24)),
+            DateTime.now().subtract(Duration(hours: 12)),
           )) {
             if (i.statusEntityType == MessageType.image ||
                 i.statusEntityType == MessageType.video ||
@@ -401,6 +401,7 @@ class StatusRepository {
               .map((statusEntity) => statusEntity.toMap())
               .toList(),
         });
+        filteredStatusEntities = [];
         return;
       } else {
         log("Status Model absent");
