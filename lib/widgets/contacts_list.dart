@@ -16,8 +16,9 @@ class ContactsList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return StreamBuilder<List<ContactChat>>(
-        stream:
-            ref.watch(chatControllerProvider).getContactChats(context: context),
+        stream: ref
+            .watch(chatControllerProvider)
+            .getContactChats(context: context),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Loader();
@@ -61,7 +62,8 @@ class ContactsList extends ConsumerWidget {
                                     ),
                                   ),
                                   leading: CircleAvatar(
-                                    backgroundImage: CachedNetworkImageProvider(
+                                    backgroundImage:
+                                        CachedNetworkImageProvider(
                                       contactChat.profilePic,
                                     ),
                                     radius: 30,

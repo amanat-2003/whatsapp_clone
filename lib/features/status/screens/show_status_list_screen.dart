@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,17 +31,17 @@ class ShowStatusListScreen extends ConsumerWidget {
               itemCount: statusModelList.length,
               itemBuilder: (context, index) {
                 final statusModel = statusModelList[index];
-                if (statusModel
-                    .statusEntities[statusModel.statusEntities.length - 1].timePosted
-                    .isBefore(
-                  DateTime.now().subtract(
-                    Duration(
-                      hours: 24,
-                    ),
-                  ),
-                )) {
-                  return SizedBox();
-                } else {
+                // if (statusModel
+                //     .statusEntities[statusModel.statusEntities.length - 1].timePosted
+                //     .isBefore(
+                //   DateTime.now().subtract(
+                //     Duration(
+                //       hours: 24,
+                //     ),
+                //   ),
+                // )) {
+                //   return SizedBox();
+                // } else {
                   return Column(
                     children: [
                       InkWell(
@@ -90,7 +88,7 @@ class ShowStatusListScreen extends ConsumerWidget {
                       const Divider(color: dividerColor, indent: 85),
                     ],
                   );
-                }
+                // }
               },
             ),
           );

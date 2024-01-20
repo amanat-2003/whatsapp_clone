@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:whatsapp_clone/colors.dart';
 import 'package:whatsapp_clone/features/auth/controller/auth_controller.dart';
+import 'package:whatsapp_clone/features/groups/screens/create_group_screen.dart';
 import 'package:whatsapp_clone/features/select_contacts/screens/select_contacts_screen.dart';
 import 'package:whatsapp_clone/features/status/screens/add_status_screen.dart';
 import 'package:whatsapp_clone/features/status/screens/show_status_list_screen.dart';
 import 'package:whatsapp_clone/widgets/contacts_list.dart';
+import 'package:whatsapp_clone/widgets/groups_list.dart';
 
 class MobileLayoutScreen extends ConsumerStatefulWidget {
   static const routeName = "/mobile-layout-screen";
@@ -23,7 +25,7 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
   @override
   void initState() {
     super.initState();
-    tabBarController = TabController(length: 3, vsync: this);
+    tabBarController = TabController(length: 4, vsync: this);
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -53,7 +55,7 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -84,12 +86,27 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
               }),
           actions: [
             IconButton(
-              icon: const Icon(Icons.search, color: Colors.grey),
+              icon: const Icon(
+                Icons.search,
+                color: Colors.grey,
+              ),
               onPressed: () {},
             ),
-            IconButton(
-              icon: const Icon(Icons.more_vert, color: Colors.grey),
-              onPressed: () {},
+            PopupMenuButton(
+              icon: Icon(Icons.more_vert, color: Colors.grey),
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem(
+                    child: Text('Create Group'),
+                    onTap: () {
+                      Future(
+                        () => Navigator.pushNamed(
+                            context, CreateGroupScreen.routeName),
+                      );
+                    },
+                  ),
+                ];
+              },
             ),
           ],
           bottom: TabBar(
@@ -106,6 +123,9 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
                 text: 'CHATS',
               ),
               Tab(
+                text: 'GROUPS',
+              ),
+              Tab(
                 text: 'STATUS',
               ),
               Tab(
@@ -118,17 +138,18 @@ class _MobileLayoutScreenState extends ConsumerState<MobileLayoutScreen>
           controller: tabBarController,
           children: [
             ContactsList(),
+            GroupsList(),
             ShowStatusListScreen(),
             Text('Calls'),
           ],
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            if (tabBarController.index == 0) {
+            if (tabBarController.index == 0 || tabBarController.index == 1) {
               Navigator.of(context).pushNamed(SelectContactsScreen.routeName);
-            } else if (tabBarController.index == 1) {
+            } else if (tabBarController.index == 2) {
               Navigator.of(context).pushNamed(AddStatusScreen.routeName);
-            } else if (tabBarController.index == 2) {}
+            } else if (tabBarController.index == 3) {}
           },
           backgroundColor: tabColor,
           child: const Icon(
