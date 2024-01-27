@@ -18,6 +18,7 @@ class MyMessageCard extends ConsumerWidget {
   final MessageType messageType;
   final MessageReplyModel repliedMessageModel;
   final bool isSeen;
+  final bool isGroupChat;
 
   const MyMessageCard({
     Key? key,
@@ -28,6 +29,7 @@ class MyMessageCard extends ConsumerWidget {
     required this.messageType,
     required this.repliedMessageModel,
     required this.isSeen,
+    required this.isGroupChat,
   }) : super(key: key);
 
   @override
@@ -60,6 +62,16 @@ class MyMessageCard extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
+                if (isGroupChat)
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      senderUserName,
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
                 if (!repliedMessageModel.isNull)
                   Padding(
                     padding: const EdgeInsets.all(8.0),

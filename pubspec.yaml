@@ -50,7 +50,7 @@ dependencies:
   emoji_picker_flutter: ^1.6.3
   enough_giphy_flutter: ^0.4.1
   path_provider: ^2.1.1
-  permission_handler: ^9.2.0
+  permission_handler: ^11.0.0
   flutter_sound: ^9.2.13
   audioplayers: ^5.2.1
   swipe_to: ^1.0.5

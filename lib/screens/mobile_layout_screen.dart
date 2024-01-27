@@ -7,7 +7,7 @@ import 'package:whatsapp_clone/features/select_contacts/screens/select_contacts_
 import 'package:whatsapp_clone/features/status/screens/add_status_screen.dart';
 import 'package:whatsapp_clone/features/status/screens/show_status_list_screen.dart';
 import 'package:whatsapp_clone/widgets/contacts_list.dart';
-import 'package:whatsapp_clone/widgets/groups_list.dart';
+import 'package:whatsapp_clone/features/groups/widgets/groups_list.dart';
 
 class MobileLayoutScreen extends ConsumerStatefulWidget {
   static const routeName = "/mobile-layout-screen";

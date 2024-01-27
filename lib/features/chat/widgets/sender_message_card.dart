@@ -19,6 +19,7 @@ class SenderMessageCard extends ConsumerWidget {
     required this.senderUserName,
     required this.repliedMessageModel,
     required this.senderUserId,
+    required this.isGroupChat,
   }) : super(key: key);
   final String text;
   final String date;
@@ -26,6 +27,7 @@ class SenderMessageCard extends ConsumerWidget {
   final String senderUserName;
   final MessageReplyModel repliedMessageModel;
   final String senderUserId;
+  final bool isGroupChat;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -57,6 +59,16 @@ class SenderMessageCard extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
+                if (isGroupChat)
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      senderUserName,
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
                 if (!repliedMessageModel.isNull)
                   Padding(
                     padding: const EdgeInsets.all(8.0),

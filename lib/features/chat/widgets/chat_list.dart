@@ -78,6 +78,7 @@ class _ChatListState extends ConsumerState<ChatList> {
                   repliedMessageModel: messageModel.messageReplyModel,
                   senderUserId: messageModel.senderUserModel.uid,
                   isSeen: messageModel.isSeen,
+                  isGroupChat: false,
                 );
               }
               return SenderMessageCard(
@@ -87,6 +88,7 @@ class _ChatListState extends ConsumerState<ChatList> {
                 messageType: messageModel.messageType,
                 repliedMessageModel: messageModel.messageReplyModel,
                 senderUserId: messageModel.senderUserModel.uid,
+                isGroupChat: false,
               );
             },
           );

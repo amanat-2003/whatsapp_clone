@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:whatsapp_clone/colors.dart';
 import 'package:whatsapp_clone/common/widgets/loader.dart';
-import 'package:whatsapp_clone/features/chat/screens/mobile_chat_screen.dart';
 import 'package:whatsapp_clone/features/groups/controller/group_controller.dart';
+import 'package:whatsapp_clone/features/groups/screens/group_chat_screen.dart';
 import 'package:whatsapp_clone/models/group_model.dart';
 
 class GroupsList extends ConsumerWidget {
@@ -32,10 +32,10 @@ class GroupsList extends ConsumerWidget {
                       InkWell(
                         onTap: () {
                           Navigator.pushNamed(
-                                    context, MobileChatScreen.routeName,
+                                    context, GroupChatScreen.routeName,
                                     arguments: {
-                                      'name': groupModel.groupName,
-                                      'uid': groupModel.groupId,
+                                      'groupName': groupModel.groupName,
+                                      'groupId': groupModel.groupId,
                                     });
                         },
                         child: Padding(
