@@ -74,5 +74,34 @@ Story View: Uses story_view to display status updates in a story-like format. <b
 Flutter Widgets: Employs widgets such as StoryView for displaying statuses and FloatingActionButton for uploading new statuses. <br/>
 State Management: Managed through Riverpod's statusControllerProvider for handling status uploads and retrieval. <br/>
 
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/amanat-2003/whatsapp_clone.git
+   ```
+
+2. Navigate to the project directory:
+   ```bash
+   cd whatsapp_clone
+   ```
+
+3. Install the dependencies:
+   ```bash
+   flutter pub get
+   ```
+
+4. Run the app:
+   ```bash
+   flutter run
+   ```
+
+## Links
+
+- **Whatsapp Clone App Working Video**:
+
+  [![Whatsapp Clone App Working Video](https://img.youtube.com/vi/2JMWxHKIKUs/0.jpg)](https://www.youtube.com/watch?v=2JMWxHKIKUs)
+- **Repository Link**: [GitHub Repository](https://github.com/amanat-2003/whatsapp_clone)
+
 # Conclusion
 The WhatsApp clone project utilizes Flutter for the frontend, Riverpod for state management, and Firebase for backend services. The project integrates various packages to enhance functionality, including contact access, media handling, and custom UI components. Each file plays a specific role in managing user interactions, data operations, and UI presentation, ensuring a comprehensive and feature-rich application.
