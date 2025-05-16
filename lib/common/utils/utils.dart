@@ -20,7 +20,6 @@ Future<GiphyGif?> pickGIF(BuildContext context) async {
     gif = await Giphy.getGif(
       context: context,
       apiKey: 'kgBN1lB270cep4K83i7tLIdcHellZSM3',
-      
     );
   } catch (e) {
     showSnackBar(context, e.toString());
@@ -59,6 +58,21 @@ Future<File?> pickImageFromCamera(BuildContext context) async {
 }
 
 Future<File?> pickVideoFromGallery(BuildContext context) async {
+  File? video;
+  try {
+    final pickedVideo =
+        await ImagePicker().pickVideo(source: ImageSource.gallery);
+
+    if (pickedVideo != null) {
+      video = File(pickedVideo.path);
+    }
+  } catch (e) {
+    showSnackBar(context, e.toString());
+  }
+  return video;
+}
+
+Future<File?> pickVideoFromCamera(BuildContext context) async {
   File? video;
   try {
     final pickedVideo =

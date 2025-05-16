@@ -15,6 +15,7 @@ import 'package:whatsapp_clone/features/auth/screens/user_information_screen.dar
 import 'package:whatsapp_clone/models/user_model.dart';
 import 'package:whatsapp_clone/screens/mobile_layout_screen.dart';
 
+
 final authRepositoryProvider = Provider(
   (ref) => AuthRepository(
     auth: FirebaseAuth.instance,
